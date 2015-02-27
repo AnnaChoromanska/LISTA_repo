@@ -5,6 +5,8 @@
 \usepackage{amsthm,amsmath}
 \usepackage{amssymb}
 \usepackage{color}
+\usepackage{algorithm}
+\usepackage{graphicx}
 %\documentstyle[nips14submit_09,times,art10]{article} % For LaTeX 2.09
 
 \newtheorem{definition}{Definition}[section]
@@ -152,6 +154,45 @@ f(z^{*}_1,z^{*}_2,\dots,z^{*}_N) &=& \sum_{i=1}^N\|WP\bar{z}_i - WPz^{*}_i - W\P
 \end{eqnarray*}
 where the last inequality results from the optimality condition.
 \end{proof}
+
+\newpage
+
+\section{FLISTA}
+
+\subsection{ISTA}
+
+\begin{algorithm}
+\caption{ISTA}
+\begin{tabular}{l}
+$Z = 0$\\
+Repeat until change in $Z$ is below a threhold\\
+\:\:\:\:\:$Z = Z - \frac{1}{L}W^{\top}(WZ-x)$ \:\:\:\:\:\:\:\:\:\:\:\:\:\:- gradient step\\
+\:\:\:\:\:$Z = h_{\alpha/L}(Z)$ \:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:- thresholding step
+\end{tabular}
+\label{alg:ISTA}
+\end{algorithm}
+
+\begin{figure}[h]
+  \center
+\includegraphics[width = 5in]{ISTAvsLISTA.jpg}
+\caption{ISTA versus LISTA.}
+\label{fig:ISTAvsLISTA}
+\end{figure} 
+
+\begin{algorithm}
+\caption{FISTA}
+\begin{tabular}{l}
+Let $\lambda_0 = 0$, $\lambda_s = \frac{1 + \sqrt{1+4\lambda_{s-1}^2}}{2}$, and $\gamma_s = \frac{1-\lambda_s}{\lambda_{s+1}}$\\
+$Z_0 = 0$\\
+Repeat until change in $Z$ is below a threhold\\
+\:\:\:\:\:$Z_{t+1} = Z_t - \frac{1}{L}W^{\top}(WZ_t-x)$ \:\:\:\:\:\:\:\:\:\:\:\:\:\:- gradient step\\
+\:\:\:\:\:$Z_{t+1} = h_{\alpha/L}(Z_{t+1})$ \:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:- thresholding step\\
+\:\:\:\:\:$Z_{t+1} = (1-\gamma_t)Z_{t+1} + \gamma_tZ_t$ \:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:- momentum step
+\end{tabular}
+\label{alg:FISTA}
+\end{algorithm}
+
+
 
 %\subsubsection*{Acknowledgments}
 
